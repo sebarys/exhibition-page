@@ -1,0 +1,26 @@
+<p>
+  rasp-activation works!
+
+  Provided activation location code: {{locationActivationCode}}
+</p>
+<br />
+
+<div *ngIf="invalidActivationCode">
+  Provided activation code is invalid
+  <br />
+</div>
+
+
+<div *ngIf="!locationAlreadyActivated && !invalidActivationCode">
+  Do you want to activate it?
+  <button id="activation-btn" role="button" aria-label="activation" (click)="activateLocation(locationActivationCode)">
+    Activate
+  </button>
+  <br />
+</div>
+
+
+<div *ngIf="locationAlreadyActivated && !invalidActivationCode">
+  Location with activation code: {{locationActivationCode}} already activated.
+</div>
+

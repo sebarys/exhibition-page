@@ -1,0 +1,76 @@
+<div *ngIf="!alreadyTakingPart">
+  Do you want to receive invitation for exhibition ...?
+  <br />
+
+  blablabbal
+  <br />
+  <br />
+
+  Provide LINK_FOR_PAGE_WITH_MAP_OF_QR_CODES
+  <br />
+</div>
+
+<div *ngIf="alreadyTakingPart">
+  Enable all informations by scanning QR codes that are placed close to Rasp works, for map you can check: LINK_FOR_PAGE_WITH_MAP_OF_QR_CODES
+  <br />
+  Below information about event, after unlock all informations you will be able to generate invitation for exhibition
+  <br />
+  (All below details should be provided by some service to do not hardocde it here)
+  <br />
+  Date: <p *ngIf="date !== 'false'">{{date}}</p> <p *ngIf="date === 'false'">???</p>
+  <br />
+  Time: <p *ngIf="time !== 'false'">{{date}}</p> <p *ngIf="time === 'false'">???</p>
+  <br />
+  Place: <p *ngIf="place !== 'false'">{{date}}</p> <p *ngIf="place === 'false'">???</p>
+  <br />
+
+  <!-- user not entitled to generate invitation -->
+  <div *ngIf="alreadyTakingPart && !entitledToInvitation">
+    You are not entitled to generate invitation yet, please unlock all informations first!
+    <br />
+  </div>
+  <!-- END user not entitled to generate invitation -->
+
+  <!-- user entitled to generate invitation -->
+  <div *ngIf="entitledToInvitation && !alreadyInvited">
+    To Generate invitation please provide your Name and surname
+    <br />
+
+    <div>
+        <form [formGroup]="invitationForm" (ngSubmit)="generateInvitation()">
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" formControlName="firstName" class="form-control"
+                  [ngClass]="{ 'is-invalid': formSubmitted && form.firstName.errors }" />
+                <div *ngIf="formSubmitted && form.firstName.errors" class="invalid-feedback">
+                    <div *ngIf="form.firstName.errors.required">First Name is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" formControlName="lastName" class="form-control"
+                  [ngClass]="{ 'is-invalid': formSubmitted && form.lastName.errors }" />
+                <div *ngIf="formSubmitted && form.lastName.errors" class="invalid-feedback">
+                    <div *ngIf="form.lastName.errors.required">Last Name is required</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button [disabled]="loading" class="btn btn-primary">Generate invitation</button>
+            </div>
+        </form>
+    </div>
+
+    <br />
+  </div>
+  <!-- END user entitled to generate invitation -->
+
+  <!-- user already generated invitation -->
+  <div *ngIf="alreadyInvited">
+    Your invitation refrence number: {{invitationId}}. Please bring this code with yourself on exhibition
+    <br />
+  </div>
+  <!-- END user already generated invitation -->
+
+</div>
+

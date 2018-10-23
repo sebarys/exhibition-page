@@ -2,6 +2,11 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.2.
 
+
+# Overview
+
+Application is using sendgrid.com API to send emails with generated invitations identifiers. It is an attempt to solve all state issues without backend and persistence using only local storage and sneding emails.  
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
