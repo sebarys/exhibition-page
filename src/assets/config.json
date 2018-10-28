@@ -1,11 +1,19 @@
 {
   "emailjs": {
-    "url": "https://api.emailjs.com/api/v1.0/email/send",
-    "service_id": "TO_PROVIDE",
-    "template_id": "TO_PROVIDE",
-    "user_id": "TO_PROVIDE"
+    "url": "TODO",
+    "service_id": "TODO",
+    "template_id": "TODO",
+    "user_id": "TODO"
   },
-  "encodedlocationCodes": [
-    "TO_PROVIDE"
-  ]
+  "recaptcha": {
+    "siteKey": "TODO"
+  },
+  "encodedLocationCodes": [
+    "TODO"
+  ],
+  "exhibition": {
+    "date": "TODO",
+    "time": "TODO",
+    "place": "TODO"
+  }
 }

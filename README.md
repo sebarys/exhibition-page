@@ -5,7 +5,17 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 # Overview
 
-Application is using sendgrid.com API to send emails with generated invitations identifiers. It is an attempt to solve all state issues without backend and persistence using only local storage and sneding emails.  
+Site for exhibition. App attempt to solve all state issues without backend and persistence using only local storage and sending emails.  
+
+# Prerequisities
+
+Application is integrated with:
+- Emailjs (http://www.emailjs.com/) - it allow sending emails directly from frontend JavaScript code
+- reCAPTCHA (https://www.google.com/recaptcha) - used to form validation (prevent spam and automated form submission)
+
+How to integrate reCAPTCHA with your email template: http://www.emailjs.com/docs/user-guide/adding-captcha-verification/
+
+Before running application you need to create and configure `emailjs` and `recaptcha` accounts according to your needs and provide required parameters gathered in `assets/config.json` file.
 
 ## Development server
 

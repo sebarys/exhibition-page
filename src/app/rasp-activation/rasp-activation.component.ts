@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LocationActivationService } from '../shared/location-activation.service';
+import { LocationActivationService } from '../shared/services/location-activation.service';
 
 @Component({
   selector: 'app-rasp-activation',
