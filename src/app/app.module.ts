@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,7 +35,9 @@ import config from '../assets/config.json';
     ReactiveFormsModule,
     RecaptchaModule,
     RecaptchaFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFireModule.initializeApp(config.firebase),
+    AngularFirestoreModule
   ],
   providers: [
     {

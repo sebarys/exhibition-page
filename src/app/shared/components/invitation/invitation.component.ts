@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class InvitationComponent implements OnInit {
 
+  private pageInitialised: boolean = false;
   alreadyInvited: boolean;
 
   invitationForm: FormGroup;
@@ -17,6 +18,8 @@ export class InvitationComponent implements OnInit {
 
   invitationId: string;
 
+  invitationsQuantity: number;
+
   constructor(private invitationService: InvitationService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -24,6 +27,14 @@ export class InvitationComponent implements OnInit {
     if(maybeInvitationId) {
       this.alreadyInvited = true;
       this.invitationId = maybeInvitationId;
+      this.pageInitialised = true;
+    } else {
+      this.invitationService.getInvitationsNumber()
+        .subscribe(numberOfInvitations => {
+
+          this.invitationsQuantity = numberOfInvitations;
+          this.pageInitialised = true;
+        })
     }
 
     this.invitationForm = this.formBuilder.group({
@@ -44,8 +55,10 @@ export class InvitationComponent implements OnInit {
   generateInvitation() {
     this.formSubmitted = true;
     // stop here if form is invalid
-    if (this.invitationForm.invalid) {
-        return;
+    if (this.invitationForm.invalid || !this.pageInitialised) {
+      console.log(`### ${this.invitationForm.invalid}, ${!this.pageInitialised}, ${JSON.stringify(this.invitationForm.errors)}`)
+
+      return;
     }
 
     this.invitationService

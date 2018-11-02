@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, mergeMap } from 'rxjs/operators';
 
 import config from '../../../assets/config.json';
 import { LocalStorageService } from './local-storage.service.js';
+import { FirebaseDatabaseService } from './firebase-database.service.js';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,10 @@ export class InvitationService {
   private emailUrl: string = config.emailjs.url;
   private invitationIdKey = 'invitation_id';
 
-  constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService) { }
+  constructor(
+    private httpClient: HttpClient,
+    private localStorageService: LocalStorageService,
+    private firebaseDatabaseService: FirebaseDatabaseService) { }
 
   /* send generated invitation to configured email server */
   generateInvitation(firstName: string, secondName: string, captchaResponse: string): Observable<string> {
@@ -35,8 +39,8 @@ export class InvitationService {
     }
     return this.httpClient.post(this.emailUrl, emailFormBodyEmailjs, this.createDefaultHttpOptions())
       .pipe(
-        map<Object, string>(response => invitationId),
         catchError((error: HttpErrorResponse) => this.handleError(error, invitationId)),
+        mergeMap<Object, string>(response => this.firebaseDatabaseService.insertInvitation(invitationId)),
         tap(() => {
           this.localStorageService.set(this.invitationIdKey, invitationId);
         })
@@ -45,6 +49,10 @@ export class InvitationService {
 
   getInvitationId(): string {
     return this.localStorageService.get(this.invitationIdKey);
+  }
+
+  getInvitationsNumber(): Observable<number> {
+    return this.firebaseDatabaseService.getInvitationsNumber();
   }
 
   private generateHash(fistName: string, secondName: string): string {
