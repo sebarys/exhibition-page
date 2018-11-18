@@ -1,26 +1,40 @@
-<p>
-  rasp-activation works!
+<div *ngIf="!pageInitialised; then initialising else pageContent"></div>
 
-  Provided activation location code: {{locationActivationCode}}
-</p>
-<br />
+<ng-template #initialising>
+  <div class="row justify-content-center">
+      <div class="col-md-6">
+          Page is loading...
+      </div>
+  </div>
+</ng-template>
 
-<div *ngIf="invalidActivationCode">
-  Provided activation code is invalid
+<ng-template #pageContent>
+  <p>
+    rasp-activation works!
+
+    Provided activation location code: {{locationActivationCode}}
+  </p>
   <br />
-</div>
+
+  <div *ngIf="invalidActivationCode">
+    Provided activation code is invalid
+    <br />
+  </div>
 
 
-<div *ngIf="!locationAlreadyActivated && !invalidActivationCode">
-  Do you want to activate it?
-  <button id="activation-btn" role="button" aria-label="activation" (click)="activateLocation(locationActivationCode)">
-    Activate
-  </button>
-  <br />
-</div>
+  <div *ngIf="!locationAlreadyActivated && !invalidActivationCode">
+    Do you want to activate it?
+    <button id="activation-btn" role="button" aria-label="activation" (click)="activateLocation(locationActivationCode)">
+      Activate
+    </button>
+    <br />
+  </div>
 
 
-<div *ngIf="locationAlreadyActivated && !invalidActivationCode">
-  Location with activation code: {{locationActivationCode}} already activated.
-</div>
+  <div *ngIf="locationAlreadyActivated && !invalidActivationCode">
+    Location with activation code: {{locationActivationCode}} already activated.
+  </div>
+</ng-template>
+
+
 

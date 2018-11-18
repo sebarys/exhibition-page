@@ -12,8 +12,11 @@ import { FirebaseDatabaseService } from './firebase-database.service.js';
 })
 export class InvitationService {
 
-  private emailUrl: string = config.emailjs.url;
-  private invitationIdKey = 'invitation_id';
+  private EMAIL_URL: string = config.emailjs.url;
+  private INVITATION_ID_KEY = 'invitation_id';
+  private MAX_NUMBER_OF_INVITATIONS: number = 50;
+
+  private cachedNumberOfFreeInvitations;
 
   constructor(
     private httpClient: HttpClient,
@@ -21,8 +24,8 @@ export class InvitationService {
     private firebaseDatabaseService: FirebaseDatabaseService) { }
 
   /* send generated invitation to configured email server */
-  generateInvitation(firstName: string, secondName: string, captchaResponse: string): Observable<string> {
-    const invitationId: string = this.generateHash(firstName, secondName);
+  generateInvitation(firstName: string, code: string, captchaResponse: string): Observable<string> {
+    const invitationId: string = this.generateHash(firstName, code);
 
     var templateParams = {
       'to_name': 'sebarys',
@@ -37,22 +40,36 @@ export class InvitationService {
       'user_id': config.emailjs.user_id,
       'template_params': templateParams
     }
-    return this.httpClient.post(this.emailUrl, emailFormBodyEmailjs, this.createDefaultHttpOptions())
+    return this.httpClient.post(this.EMAIL_URL, emailFormBodyEmailjs, this.createDefaultHttpOptions())
       .pipe(
         catchError((error: HttpErrorResponse) => this.handleError(error, invitationId)),
         mergeMap<Object, string>(response => this.firebaseDatabaseService.insertInvitation(invitationId)),
         tap(() => {
-          this.localStorageService.set(this.invitationIdKey, invitationId);
+          this.localStorageService.set(this.INVITATION_ID_KEY, invitationId);
         })
       );
   }
 
   getInvitationId(): string {
-    return this.localStorageService.get(this.invitationIdKey);
+    return this.localStorageService.get(this.INVITATION_ID_KEY);
   }
 
-  getInvitationsNumber(): Observable<number> {
-    return this.firebaseDatabaseService.getInvitationsNumber();
+  getNumberOfFreeInvitations(): Observable<number> {
+    return this.firebaseDatabaseService.getNumberOfInvitations()
+      .pipe(
+        map<number, number>(numberOfInvitations => this.MAX_NUMBER_OF_INVITATIONS - numberOfInvitations),
+        tap(numberOfFreeInvitations => this.cachedNumberOfFreeInvitations = numberOfFreeInvitations)
+      );
+  }
+
+  getCachedNumberOfFreeInvitations(): Observable<number> {
+    if(this.cachedNumberOfFreeInvitations) {
+      console.log(`Cached nr of invitations: ${this.cachedNumberOfFreeInvitations}`)
+      return of(this.cachedNumberOfFreeInvitations)
+    } else {
+      console.log(`No cached nr of invitations, checking...`)
+      return this.getNumberOfFreeInvitations();
+    }
   }
 
   private generateHash(fistName: string, secondName: string): string {
@@ -81,7 +98,6 @@ export class InvitationService {
   private createDefaultHttpOptions() {
     return {
       headers: new HttpHeaders({
-        // 'Authorization': 'Bearer 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',
         'Content-Type': 'application/json'
       })
     };

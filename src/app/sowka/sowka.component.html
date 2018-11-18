@@ -1,5 +1,6 @@
 <div class="container h-100">
 
+  <!-- info page link -->
   <div class="fixed-top">
     <div class="float-right pr-2">
         <h2>
@@ -7,7 +8,9 @@
         </h2>
     </div>
   </div>
+  <!-- END info page link -->
 
+  <!-- selected character -->
   <div class="row h-25">
     <div class="col-md-12">
       &nbsp;
@@ -25,31 +28,46 @@
       &nbsp;
     </div>
   </div>
+  <!-- END selected character -->
 
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <p class="text-justify">
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in interdum tellus, in faucibus mi. Maecenas pulvinar ac velit non laoreet. Donec non libero ut ex condimentum pulvinar. Fusce molestie sed augue et feugiat. Praesent at bibendum metus, ut hendrerit eros. Nulla pellentesque mauris convallis tellus feugiat tempor. Proin lacus magna, placerat ut elementum non, convallis ut nisi. Mauris scelerisque nibh eget leo maximus, a ultricies augue tristique. Proin ac malesuada ipsum, ac elementum neque. Quisque vitae sem malesuada, tristique leo quis, egestas ligula. Vivamus vulputate tellus vel arcu sagittis posuere. Vestibulum in odio et mi lacinia porttitor et vel ex. Integer nibh ipsum, facilisis vitae euismod in, gravida sit amet eros. Aenean vulputate laoreet ipsum, in auctor metus blandit non."
-      </p>
+  <div *ngIf="!pageInitialised; then initialising else pageContent"></div>
+
+  <ng-template #initialising>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            Page is loading...
+        </div>
     </div>
-  </div>
+  </ng-template>
 
-  <div class="row h-5">
-    <div class="col-md-12">
-      &nbsp;
-    </div>
-  </div>
+  <ng-template #pageContent>
 
-  <!-- nie wiem dlaczego na mobile przycisk zlewa się -->
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <button id="play-btn" role="button" type="button" class="btn btn-secondary h-100 w-100" aria-label="play" class="w-100">
-        <p class="text-center">
-          Zagraj!
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <p class="text-justify">
+          Number of invitations left: {{numberOfFreeInvitations}}
+        <br/>
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in interdum tellus, in faucibus mi. Maecenas pulvinar ac velit non laoreet. Donec non libero ut ex condimentum pulvinar. Fusce molestie sed augue et feugiat. Praesent at bibendum metus, ut hendrerit eros. Nulla pellentesque mauris convallis tellus feugiat tempor. Proin lacus magna, placerat ut elementum non, convallis ut nisi. Mauris scelerisque nibh eget leo maximus, a ultricies augue tristique. Proin ac malesuada ipsum, ac elementum neque. Quisque vitae sem malesuada, tristique leo quis, egestas ligula. Vivamus vulputate tellus vel arcu sagittis posuere. Vestibulum in odio et mi lacinia porttitor et vel ex. Integer nibh ipsum, facilisis vitae euismod in, gravida sit amet eros. Aenean vulputate laoreet ipsum, in auctor metus blandit non."
         </p>
-      </button>
+      </div>
     </div>
-  </div>
 
+    <div class="row h-5">
+      <div class="col-md-12">
+        &nbsp;
+      </div>
+    </div>
+
+    <!-- to investigate: on mobile dev mode button is not accessible -->
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <button id="play-btn" role="button" type="button" class="btn btn-secondary h-100 w-100" aria-label="play" class="w-100">
+          <p class="text-center">
+            Zagraj!
+          </p>
+        </button>
+      </div>
+    </div>
+  </ng-template>
 
 </div>

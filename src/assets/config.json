@@ -1,20 +1,12 @@
 {
   "emailjs": {
-    "url": "TODO",
-    "service_id": "TODO",
+    "url": "https://api.emailjs.com/api/v1.0/email/send",
+    "service_id": "gmail",
     "template_id": "TODO",
     "user_id": "TODO"
   },
   "recaptcha": {
     "siteKey": "TODO"
-  },
-  "encodedLocationCodes": [
-    "TODO"
-  ],
-  "exhibition": {
-    "date": "TODO",
-    "time": "TODO",
-    "place": "TODO"
   },
   "firebase" :{
     "apiKey": "TODO",

@@ -9,6 +9,8 @@ import { LocationActivationService } from '../shared/services/location-activatio
 })
 export class RaspActivationComponent implements OnInit {
 
+  pageInitialised: boolean = false;
+
   locationActivationCode: string;
   invalidActivationCode: boolean;
   locationAlreadyActivated: boolean;
@@ -18,20 +20,26 @@ export class RaspActivationComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.locationActivationCode = params.id;
-      const isActivationCodeValid = this.locationActivationService.validateLocationCode(this.locationActivationCode);
-      this.invalidActivationCode = !isActivationCodeValid;
-      if(isActivationCodeValid) {
-        this.locationAlreadyActivated = this.locationActivationService.checkIfLocationAlreadyActivated(this.locationActivationCode);
-      }
+      this.locationActivationService.validateLocationCode(this.locationActivationCode)
+        .subscribe(isActivationCodeValid => {
+          this.invalidActivationCode = !isActivationCodeValid;
+          if(isActivationCodeValid) {
+            this.locationAlreadyActivated = this.locationActivationService.checkIfLocationAlreadyActivated(this.locationActivationCode);
+          }
+          this.pageInitialised = true;
+        })
     });
   }
 
   activateLocation() {
-    const locationActivatedSuccessfully = this.locationActivationService.activateLocation(this.locationActivationCode)
-    console.log(`location activation: ${locationActivatedSuccessfully}`);
-    if(locationActivatedSuccessfully) {
-      this.locationAlreadyActivated = true
-    }
+    this.locationActivationService.activateLocation(this.locationActivationCode)
+      .subscribe(isLocationActivatedSuccessfully => {
+        const locationActivatedSuccessfully = isLocationActivatedSuccessfully;
+        console.log(`location activation result: ${locationActivatedSuccessfully}`);
+        if(locationActivatedSuccessfully) {
+          this.locationAlreadyActivated = true
+        }
+      })
   }
 
 }
