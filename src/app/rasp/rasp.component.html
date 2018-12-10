@@ -1,15 +1,5 @@
 <div class="container h-100">
 
-  <!-- info page link -->
-  <div class="fixed-top">
-    <div class="float-right pr-2">
-        <h2>
-            <a routerLink="/about" routerLinkActive="active">Info</a>
-        </h2>
-    </div>
-  </div>
-  <!-- END info page link -->
-
   <!-- selected character -->
   <div class="row h-5">
     <div class="col-md-12">
@@ -30,70 +20,67 @@
   </div>
   <!-- END selected character -->
 
-  <div *ngIf="!pageInitialised; then initialising else pageContent"></div>
 
-  <ng-template #initialising>
+  <!-- page content -->
+  <div>
+
+    <!-- general info -->
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            Page is loading...
-        </div>
-    </div>
-  </ng-template>
-
-  <ng-template #pageContent>
-
-    <div>
-      Number of invitations left: {{numberOfFreeInvitations}}
-    </div>
-
-    <div *ngIf="!alreadyTakingPart; then newcomerInfo else currentStatus"></div>
-
-    <ng-template #newcomerInfo>
-      <div>
-        Do you want to receive invitation for exhibition ...?
-
-        <b>Number of free invitations: {{numberOfFreeInvitations}}</b>
-        <br />
-
-        blablabbal
-        <br />
-        <br />
-
-        Provide LINK_FOR_PAGE_WITH_MAP_OF_QR_CODES
-        <br />
-      </div>
-    </ng-template>
-
-    <ng-template #currentStatus>
-      <div>
-        <!-- details about exhibition -->
-        <p>
-          Enable all informations by scanning QR codes that are placed close to Rasp works, for map you can check: LINK_FOR_PAGE_WITH_MAP_OF_QR_CODES
-          <br />
-          Below information about event, after unlock all informations you will be able to generate invitation for exhibition
+      <div class="col-md-6">
+        <p class="text-justify">
+            Zafunduj sobie wycieczkę po katowickich muralach Raspazjana. Pod każdym z niżej wymienionych znajdziesz QR kody.
+            Zeskanuj minimum 2 QR kody, a zdobędziesz zaproszenie na wernisaż.
         </p>
-        <br />
-        <p>Date: {{date}}</p>
-        <p>Time: {{time}}</p>
-        <p>Location: {{location}}</p>
-        <p>Apartment number: {{apartmentNumber}}</p>
-        <!-- END details about exhibition -->
-
-        <!-- user not entitled to generate invitation -->
-        <div *ngIf="!entitledToInvitation">
-          You are not entitled to generate invitation yet, please unlock all informations first!
-          <br />
-        </div>
-        <!-- END user not entitled to generate invitation -->
-
-        <!-- invitation component -->
-        <div *ngIf="entitledToInvitation">
-          <invitation></invitation>
-        </div>
-        <!-- END invitation component -->
+          <br/>
+        <p class="text-justify">
+          Lokalizacje murali:
+        </p>
+        <ul>
+          <li>ul. 3 maja 38 (oficyna obok lokalu Biała Małpa)</li>
+          <li>ul. Katowicka 41</li>
+          <li>ul Graniczna (tunel)</li>
+          <li>ul. Damrota (tunel)</li>
+        </ul>
+        <br/>
       </div>
-    </ng-template>
+    </div>
+    <!-- END general info -->
 
-  </ng-template>
+    <div *ngIf="alreadyTakingPart || alreadyInvited" class="justify-content-center">
+
+      <!-- details about exhibition -->
+      <div *ngIf="!alreadyInvited" class="row justify-content-center">
+        <div class="col-md-6">
+          <p>
+            Poniżej niezbędne informacje dotyczące wydarzenia.
+            Po odblokowaniu wszystkich szczegółów będziesz miał możliwośc wygenerowania zaproszenia na wystawę.
+          </p>
+          <ul>
+            <li>Data: {{date}}</li>
+            <li>Godzina: {{time}}</li>
+            <li>Adres: {{location}}</li>
+            <li>Piętro: {{floorNumber}}</li>
+          </ul>
+        </div>
+      </div>
+      <!-- END details about exhibition -->
+
+      <!-- invitation component -->
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <invitation [entitledToInvitation]="entitledToInvitation || alreadyInvited"></invitation>
+        </div>
+      </div>
+      <!-- END invitation component -->
+    </div>
+
+  </div>
+  <!-- END page content -->
+
+  <div class="row h-5">
+    <div class="col-md-12">
+      &nbsp;
+    </div>
+  </div>
 
 </div>

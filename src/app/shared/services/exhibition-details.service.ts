@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 
 import { FirebaseDatabaseService } from './firebase-database.service.js';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExhibitionDetailsService {
 
-  private DATE = '01.12.2019';
-  private TIME = '23:59:00';
+  private DATE = '7 grudnia 2018';
+  private TIME = '20:00:00';
   private LOCATION_IDENTIFIER = '7H2JogEwBzNeocpz4rTx';
-  private APARTMENT_NUMBER_IDENTIFIER = 'ZVq4eb60QC6K2K1F8tnm';
+  private APARTMENT_FLOOR_IDENTIFIER = 'ZVq4eb60QC6K2K1F8tnm';
+  private cachedLocation: string;
+  private cachedFloorNumber: string;
 
   constructor(private firebaseDatabaseService: FirebaseDatabaseService) { }
 
@@ -24,10 +27,24 @@ export class ExhibitionDetailsService {
   }
 
   getLocation(): Observable<string>  {
-    return this.firebaseDatabaseService.getExhibitionInformation(this.LOCATION_IDENTIFIER);
+    if(this.cachedLocation) {
+      return of(this.cachedLocation)
+    } else {
+      return this.firebaseDatabaseService.getExhibitionInformation(this.LOCATION_IDENTIFIER)
+      .pipe(
+        tap(location => this.cachedLocation = location)
+      );
+    }
   }
 
-  getApartmentNumber(): Observable<string> {
-    return this.firebaseDatabaseService.getExhibitionInformation(this.APARTMENT_NUMBER_IDENTIFIER);
+  getFloor(): Observable<string> {
+    if(this.cachedFloorNumber) {
+      return of(this.cachedFloorNumber)
+    } else {
+    return this.firebaseDatabaseService.getExhibitionInformation(this.APARTMENT_FLOOR_IDENTIFIER)
+      .pipe(
+        tap(floorNumber => this.cachedFloorNumber = floorNumber)
+      );
+    }
   }
 }

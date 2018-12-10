@@ -1,40 +1,103 @@
-<div *ngIf="!pageInitialised; then initialising else pageContent"></div>
+<div class="container h-100">
 
-<ng-template #initialising>
-  <div class="row justify-content-center">
-      <div class="col-md-6">
-          Page is loading...
+  <div class="row h-5">
+    <div class="col-md-12">
+      &nbsp;
+    </div>
+  </div>
+
+  <div *ngIf="!pageInitialised; then initialising else pageContent"></div>
+
+  <ng-template #initialising>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            Ładowanie strony...
+        </div>
+    </div>
+  </ng-template>
+
+  <!-- page content -->
+  <ng-template #pageContent>
+    <div *ngIf="errorDuringInitialisation; then initError else codeValidated "></div>
+
+    <!-- initialisation error  -->
+    <ng-template #initError>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <p class="text-justify">
+            Wystąpił błąd podczas sprawdzania kodu. Sprawdź swoje połączenie z Internetem i spróbuj odświeżyć stronę. Jeśli sytuacja będzie się powtarzać, prosimy o kontakt z organizatorem.
+          </p>
+        </div>
       </div>
-  </div>
-</ng-template>
+    </ng-template>
+    <!-- END initialisation error  -->
 
-<ng-template #pageContent>
-  <p>
-    rasp-activation works!
+    <!-- code validated -->
+    <ng-template #codeValidated>
 
-    Provided activation location code: {{locationActivationCode}}
-  </p>
-  <br />
+      <div *ngIf="invalidActivationCode ; then invalidCode else codeActivation"></div>
 
-  <div *ngIf="invalidActivationCode">
-    Provided activation code is invalid
-    <br />
-  </div>
+      <!-- invalid activation code -->
+      <ng-template #invalidCode>
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <p class="text-justify">
+              Podany kod nie jest aktywny. Spróbuj zeskanować jeden z kodów umieszczonych pod muralami z listy, którą znajdziesz
+              <a class="navbar-brand" style="font-size: inherit;" routerLink="/rasp" routerLinkActive="active"> tutaj</a>
+            </p>
+          </div>
+        </div>
+      </ng-template>
+      <!-- END invalid activation code  -->
 
+      <!-- activation code info -->
+      <ng-template #codeActivation>
 
-  <div *ngIf="!locationAlreadyActivated && !invalidActivationCode">
-    Do you want to activate it?
-    <button id="activation-btn" role="button" aria-label="activation" (click)="activateLocation(locationActivationCode)">
-      Activate
-    </button>
-    <br />
-  </div>
+        <!-- code activation form -->
+        <div *ngIf="!locationAlreadyActivated">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <p class="text-justify">
+                Gratulacje! Udało Ci się znaleźć jeden z kodów przybliżających Cię do zdobycia zaproszenia na wystawę.
+              </p>
+              <p class="text-justify">
+                Aby aktywować wprowadzony kod kliknij w przycisk znajdujący się poniżej.
+              </p>
+            </div>
+          </div>
 
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <button id="activation-btn" role="button" class="btn btn-light w-100 rounded-0" aria-label="activation" (click)="activateLocation(locationActivationCode)">
+                <h3 class="text-center w-100 h-100">
+                  Aktywuj
+                </h3>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- END code activation form -->
 
-  <div *ngIf="locationAlreadyActivated && !invalidActivationCode">
-    Location with activation code: {{locationActivationCode}} already activated.
-  </div>
-</ng-template>
+        <!-- code already activated -->
+        <div *ngIf="locationAlreadyActivated">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <p class="text-justify">
+                Podany kod został już przez Ciebie aktywowany. Aby sprawdzić czy możesz już wygenerować zaproszenie przejdź
+                <a style="font-size: inherit;" class="navbar-brand" routerLink="/rasp" routerLinkActive="active"> tutaj</a>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- END code already activated -->
 
+      </ng-template>
+      <!-- END activation code info -->
 
+    </ng-template>
+    <!-- END code validated -->
 
+  </ng-template>
+  <!-- END page content -->
+
+</div>

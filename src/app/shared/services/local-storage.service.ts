@@ -15,6 +15,7 @@ export class LocalStorageService {
       resultOfSetting = true;
     } catch (e) {
       console.error('Error saving to localStorage', e);
+      resultOfSetting = false;
     }
     return resultOfSetting;
   }

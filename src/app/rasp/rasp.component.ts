@@ -10,8 +10,8 @@ import { InvitationService } from '../shared/services/invitation.service';
 })
 export class RaspComponent implements OnInit {
 
-  pageInitialised: boolean = false;
   alreadyTakingPart: boolean;
+  alreadyInvited: boolean;
   entitledToInvitation: boolean;
   runOutOfInvitations: boolean;
 
@@ -20,31 +20,26 @@ export class RaspComponent implements OnInit {
   date: string = '???';
   time: string = '???';
   location: string = '???';
-  apartmentNumber: string = '???';
+  floorNumber: string = '???';
 
   constructor(
     private locationActivationService: LocationActivationService,
-    private exhibitionDetailsService: ExhibitionDetailsService,
-    private invitationService: InvitationService
+    private invitationService: InvitationService,
+    private exhibitionDetailsService: ExhibitionDetailsService
     ) { }
 
   ngOnInit() {
-    this.invitationService.getCachedNumberOfFreeInvitations()
-      .subscribe(numberOfFreeInvitations => {
-
-        if(numberOfFreeInvitations > 0) {
-          this.numberOfFreeInvitations = numberOfFreeInvitations;
-          this.initialisePageValues();
-        } else {
-          this.runOutOfInvitations = true;
-          this.pageInitialised = true;
-        }
-      })
+    this.initialisePageValues();
   }
 
   private initialisePageValues() {
     this.locationActivationService.getActivatedLocations()
       .subscribe(activatedLocations => {
+        if(this.invitationService.getInvitationId()) {
+          this.alreadyInvited = true;
+        } else {
+          this.alreadyInvited = false;
+        }
         const numberOfAlreadyActivatedLocations = activatedLocations.length;
         this.date = this.exhibitionDetailsService.getDate();
         this.time = this.exhibitionDetailsService.getTime();
@@ -56,12 +51,10 @@ export class RaspComponent implements OnInit {
         }
 
         if (numberOfAlreadyActivatedLocations >= 2) {
-          this.exhibitionDetailsService.getApartmentNumber()
-            .subscribe(apartmentNumber => this.apartmentNumber = apartmentNumber);
+          this.exhibitionDetailsService.getFloor()
+            .subscribe(floor => this.floorNumber = floor);
           this.entitledToInvitation = true;
         }
-
-        this.pageInitialised = true;
       })
   }
 

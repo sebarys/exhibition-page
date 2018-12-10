@@ -1,0 +1,56 @@
+<div class="container h-100">
+
+  <div class="row h-10">
+    <div class="col-md-12">
+      &nbsp;
+    </div>
+  </div>
+
+  <!-- page content -->
+  <div>
+    <div *ngIf="!entitledToInvitation; then goBackPage else invitationPage"></div>
+
+    <!-- go back page -->
+    <ng-template #goBackPage>
+
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          Aby wygenerować zaproszenie, musisz najpierw ukończyć grę.
+          <br/>
+          <br/>
+          <a class="navbar-brand" style="font-size: inherit;" routerLink="/sowka" routerLinkActive="active"> Kliknij tutaj by zagrać</a>
+        </div>
+      </div>
+    </ng-template>
+    <!-- END go back page -->
+
+    <!-- invitation page -->
+    <ng-template #invitationPage>
+
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <p class="text-justify">
+            Gratulacje! Udało Ci się ukończyć grę.
+          </p>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <invitation [entitledToInvitation]="entitledToInvitation"></invitation>
+        </div>
+      </div>
+
+      <div class="row h-5">
+        <div class="col-md-12">
+          &nbsp;
+        </div>
+      </div>
+
+    </ng-template>
+    <!-- END invitation page -->
+
+  </div>
+  <!-- END page content -->
+
+</div>

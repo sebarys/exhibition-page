@@ -13,8 +13,8 @@ import { FirebaseDatabaseService } from './firebase-database.service.js';
 export class InvitationService {
 
   private EMAIL_URL: string = config.emailjs.url;
-  private INVITATION_ID_KEY = 'invitation_id';
-  private MAX_NUMBER_OF_INVITATIONS: number = 50;
+  private INVITATION_ID_KEY = 'aW52aXRhdGlvbi1pZA==';
+  private MAX_NUMBER_OF_INVITATIONS: number = 100;
 
   private cachedNumberOfFreeInvitations;
 

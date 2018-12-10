@@ -10,6 +10,7 @@ import { LocationActivationService } from '../shared/services/location-activatio
 export class RaspActivationComponent implements OnInit {
 
   pageInitialised: boolean = false;
+  errorDuringInitialisation: boolean = false;
 
   locationActivationCode: string;
   invalidActivationCode: boolean;
@@ -27,6 +28,10 @@ export class RaspActivationComponent implements OnInit {
             this.locationAlreadyActivated = this.locationActivationService.checkIfLocationAlreadyActivated(this.locationActivationCode);
           }
           this.pageInitialised = true;
+        }, err => {
+          this.errorDuringInitialisation = true;
+          this.pageInitialised = true;
+          console.error('Error during validating provided location code. Please check your Internet connection.')
         })
     });
   }

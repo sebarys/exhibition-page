@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QuerySnapshot, DocumentSnapshot } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { from, Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,20 @@ export class FirebaseDatabaseService {
   getNumberOfInvitations(): Observable<number> {
     return this.invitationsCollection.get()
       .pipe(
-        map<QuerySnapshot<{}>, number>(invitations => invitations.size)
+        //TODO: if error return big negative value
+        catchError((error: HttpErrorResponse, caught) => {
+          console.log(`Error: ${JSON.stringify(error)}`);
+          return caught;
+        }),
+        map<QuerySnapshot<{}>, number>(invitations =>  {
+          if(invitations.empty) {
+            // there is at least one invitation so if empty it means that there is not internet connection or sth else
+            // then we return big value
+            return 10000;
+          } else {
+            return invitations.size;
+          }
+        })
       );
   }
 

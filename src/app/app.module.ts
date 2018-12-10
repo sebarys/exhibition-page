@@ -17,6 +17,9 @@ import { InvitationComponent } from './shared/components/invitation/invitation.c
 import { AboutExhibitionComponent } from './about-exhibition/about-exhibition.component';
 
 import config from '../assets/config.json';
+import { SowkaPlayComponent } from './sowka-play/sowka-play.component';
+import { SowkaPlayIframeComponent, SafePipe } from './sowka-play-iframe/sowka-play-iframe.component';
+import { SowkaInvitationComponent } from './sowka-invitation/sowka-invitation.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,11 @@ import config from '../assets/config.json';
     RaspComponent,
     RaspActivationComponent,
     InvitationComponent,
-    AboutExhibitionComponent
+    AboutExhibitionComponent,
+    SowkaPlayComponent,
+    SafePipe,
+    SowkaPlayIframeComponent,
+    SowkaInvitationComponent
   ],
   imports: [
     BrowserModule,

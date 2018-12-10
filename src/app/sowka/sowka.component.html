@@ -1,17 +1,7 @@
 <div class="container h-100">
 
-  <!-- info page link -->
-  <div class="fixed-top">
-    <div class="float-right pr-2">
-        <h2>
-            <a routerLink="/about" routerLinkActive="active">Info</a>
-        </h2>
-    </div>
-  </div>
-  <!-- END info page link -->
-
   <!-- selected character -->
-  <div class="row h-25">
+  <div class="row h-10">
     <div class="col-md-12">
       &nbsp;
     </div>
@@ -30,25 +20,25 @@
   </div>
   <!-- END selected character -->
 
-  <div *ngIf="!pageInitialised; then initialising else pageContent"></div>
-
-  <ng-template #initialising>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            Page is loading...
-        </div>
-    </div>
-  </ng-template>
-
-  <ng-template #pageContent>
+  <!-- page content -->
+  <div>
 
     <div class="row justify-content-center">
       <div class="col-md-6">
         <p class="text-justify">
-          Number of invitations left: {{numberOfFreeInvitations}}
-        <br/>
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in interdum tellus, in faucibus mi. Maecenas pulvinar ac velit non laoreet. Donec non libero ut ex condimentum pulvinar. Fusce molestie sed augue et feugiat. Praesent at bibendum metus, ut hendrerit eros. Nulla pellentesque mauris convallis tellus feugiat tempor. Proin lacus magna, placerat ut elementum non, convallis ut nisi. Mauris scelerisque nibh eget leo maximus, a ultricies augue tristique. Proin ac malesuada ipsum, ac elementum neque. Quisque vitae sem malesuada, tristique leo quis, egestas ligula. Vivamus vulputate tellus vel arcu sagittis posuere. Vestibulum in odio et mi lacinia porttitor et vel ex. Integer nibh ipsum, facilisis vitae euismod in, gravida sit amet eros. Aenean vulputate laoreet ipsum, in auctor metus blandit non."
+          Przenieś się na katowicki Nikisz i wciel w rolę Erwina Sówki. Przejdź przez 2 poziomy gry i zdobądź zaproszenie na wernisaż.
         </p>
+          <br/>
+        <p class="text-justify">
+          Psst! Unikej sagich bab!
+        </p>
+        <br/>
+
+        <div class="row justify-content-center">
+          <div class="col-md-12">
+            <invitation></invitation>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -58,16 +48,17 @@
       </div>
     </div>
 
-    <!-- to investigate: on mobile dev mode button is not accessible -->
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <button id="play-btn" role="button" type="button" class="btn btn-secondary h-100 w-100" aria-label="play" class="w-100">
-          <p class="text-center">
+        <button id="play-btn" role="button" type="button" class="btn btn-light w-100 rounded-0" aria-label="play" (click)="play()">
+          <h3 >
             Zagraj!
-          </p>
+          </h3>
         </button>
       </div>
     </div>
-  </ng-template>
+
+  </div>
+  <!-- END page content -->
 
 </div>

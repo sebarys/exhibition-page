@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { InvitationService } from '../../services/invitation.service';
 import { FormBuilder, FormGroup, Validators, ValidationErrors } from '@angular/forms';
+import { ExhibitionDetailsService } from '../../services/exhibition-details.service';
 
 @Component({
   selector: 'invitation',
@@ -9,9 +10,16 @@ import { FormBuilder, FormGroup, Validators, ValidationErrors } from '@angular/f
 })
 export class InvitationComponent implements OnInit {
 
+  @Input() entitledToInvitation = false;
+
   pageInitialised: boolean = false;
   generatingInvitationInProgress: boolean = false;
   alreadyInvited: boolean;
+
+  date: string = '???';
+  time: string = '???';
+  location: string = '???';
+  floorNumber: string = '???';
 
   invitationForm: FormGroup;
   captchaResponse: string;
@@ -21,7 +29,11 @@ export class InvitationComponent implements OnInit {
 
   numberOfFreeInvitations: number;
 
-  constructor(private invitationService: InvitationService, private formBuilder: FormBuilder) { }
+  constructor(
+    private invitationService: InvitationService,
+    private exhibitionDetailsService: ExhibitionDetailsService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     const maybeInvitationId = this.invitationService.getInvitationId();
@@ -30,6 +42,7 @@ export class InvitationComponent implements OnInit {
       this.alreadyInvited = true;
       this.invitationId = maybeInvitationId;
       this.pageInitialised = true;
+      this.fetchExhibitonDetails()
     } else {
       this.invitationService.getCachedNumberOfFreeInvitations()
         .subscribe(numberOfFreeInvitations => {
@@ -39,7 +52,7 @@ export class InvitationComponent implements OnInit {
     }
 
     this.invitationForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern('^[A-Za-z][A-Za-z ]+$')]],
       recaptcha: [null, Validators.required]
     });
   }
@@ -70,6 +83,7 @@ export class InvitationComponent implements OnInit {
       return;
     }
 
+    //I think that form should disapear during generating invitation.
     this.generatingInvitationInProgress = true;
     this.invitationService
       .generateInvitation(
@@ -82,6 +96,7 @@ export class InvitationComponent implements OnInit {
           this.invitationId = invitationId;
           this.alreadyInvited = true;
           this.generatingInvitationInProgress = false;
+          location.reload();
         },
         errorMsg => alert(errorMsg)
       );
@@ -89,6 +104,15 @@ export class InvitationComponent implements OnInit {
 
   private generateRandomCode() {
     return Math.random().toString(36).substring(7);
+  }
+
+  private fetchExhibitonDetails() {
+    this.date = this.exhibitionDetailsService.getDate();
+    this.time = this.exhibitionDetailsService.getTime();
+    this.exhibitionDetailsService.getLocation()
+      .subscribe(place => this.location = place);
+    this.exhibitionDetailsService.getFloor()
+      .subscribe(floor => this.floorNumber = floor);
   }
 
 }
