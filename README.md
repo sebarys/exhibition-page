@@ -2,7 +2,6 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.2.
 
-
 # Overview
 
 Site for exhibition. You can play one of two games to receive invitation. After generating invitation code it will be send to organizer email box and saved in firebase database.
@@ -37,3 +36,4 @@ To deploy application build it first and use firebase cli as described in docume
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
